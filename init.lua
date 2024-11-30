@@ -11,12 +11,17 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.signcolumn = "number"
 
+-- Support for highlighting in Bython
+vim.filetype.add({
+    extension = {
+        by = "python",
+    },
+})
+
 require('lualine').setup {
     options = {
         icons_enabled = true,
         theme = 'auto',
-        --component_separators = { left = '', right = ''},
-        --section_separators = { left = '', right = ''},
         component_separators = { left = '|', right = '|'},
         section_separators = { left = '', right = ''},
         disabled_filetypes = {
