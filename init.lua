@@ -65,8 +65,7 @@ require('code_runner').setup({
     filetype = {
         java = {
             "cd $dir &&",
-            "javac $fileName &&",
-            "java $fileNameWithoutExt"
+            "java $fileName"
         },
         go = {
             "cd $dir &&",
