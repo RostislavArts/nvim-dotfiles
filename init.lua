@@ -39,7 +39,7 @@ require('lualine').setup {
     },
     sections = {
         lualine_a = {'mode'},
-        lualine_b = {'branch', 'diff', 'diagnostics'},
+        lualine_b = {'branch', 'diff'},
         lualine_c = {'filename'},
         lualine_x = {'encoding', 'filetype'},
         lualine_y = {'progress'},
@@ -58,8 +58,6 @@ require('lualine').setup {
     inactive_winbar = {},
     extensions = {}
 }
-
-require('mini.completion').setup()
 
 require('code_runner').setup({
     filetype = {
@@ -100,7 +98,7 @@ require('code_runner').setup({
 
 require'nvim-treesitter.configs'.setup {
   -- A list of parser names, or "all" (the listed parsers MUST always be installed)
-  ensure_installed = { "c", "cpp", "lua", "java", "rust", "python", "html", "javascript", "typescript", "sql", "markdown", "markdown_inline" },
+  ensure_installed = { "c", "cpp", "lua", "java", "rust", "python", "html", "javascript", "typescript", "sql", "markdown", "markdown_inline", "go" },
 
   -- Install parsers synchronously (only applied to `ensure_installed`)
   sync_install = false,
@@ -132,3 +130,35 @@ require'nvim-treesitter.configs'.setup {
     additional_vim_regex_highlighting = false,
   },
 }
+
+--require('mini.completion').setup()
+
+-- Autocompletion setup
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
+require("lspconfig").gopls.setup({capabilities = capabilities})
+require("lspconfig").clangd.setup({capabilities = capabilities})
+require("lspconfig").jdtls.setup({capabilities = capabilities})
+require("mason").setup()
+require("mason-lspconfig").setup()
+
+local cmp = require("cmp")
+cmp.setup({
+    mapping = cmp.mapping.preset.insert({
+        ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+        ['<C-f>'] = cmp.mapping.scroll_docs(4),
+        ['<C-o>'] = cmp.mapping.complete(),
+        ['<C-e>'] = cmp.mapping.abort(),
+        ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    }),
+    snippet = {
+        expand = function(args)
+            require('luasnip').lsp_expand(args.body)
+        end,
+    },
+    sources = cmp.config.sources({
+        { name = 'nvim_lsp' },
+        { name = 'luasnip' },
+    }, {
+        { name = 'buffer' },
+    }),
+})
