@@ -137,11 +137,12 @@ require'nvim-treesitter.configs'.setup {
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 require("mason").setup()
 require("mason-lspconfig").setup({
-    ensure_installed = {"clangd", "gopls", "jdtls"},
+    ensure_installed = {"clangd", "gopls", "jdtls", "pyright"},
 })
 require("lspconfig").gopls.setup({capabilities = capabilities})
 require("lspconfig").clangd.setup({capabilities = capabilities})
 require("lspconfig").jdtls.setup({capabilities = capabilities})
+require("lspconfig").pyright.setup({capabilities = capabilities})
 
 local cmp = require("cmp")
 cmp.setup({
